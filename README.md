@@ -20,7 +20,7 @@ Project Structure
 Installation
 
 1. Clone the repository:
-git clone <repo-url>
+git clone <https://github.com/Idongesiteyo/spikerz_assessment.git>
 
 2. Install the dependencies:
 
