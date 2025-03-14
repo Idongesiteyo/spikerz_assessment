@@ -1,0 +1,43 @@
+image: cypress/browsers:node-22.11.0-chrome-130.0.6723.69-1-ff-132.0-edge-130.0.2849.56-1
+
+pipelines:
+  branches:
+    staging:
+      - step:
+          name: Run Smoke Tests (Chrome & Edge)
+          script:
+            - npm ci                              # Install dependencies
+            - npx cypress install                 # Install Cypress in ci
+            - chmod +x ./node_modules/.bin/cypress  # Ensure Cypress binary is executable
+            - echo "Running smoke tests on staging branch..."
+            - npm run start &
+            - npx cypress run \
+                --browser chrome \
+                --env grep=@smoke \
+                --reporter-options reportDir=cypress/reports,reportFilename=index.html
+            - npm run start &
+            - npx cypress run \
+                --browser edge \
+                --env grep=@smoke \
+                --reporter-options reportDir=cypress/reports,reportFilename=index.html
+          artifacts:
+            - cypress/reports/**                  # Save test reports as artifacts
+
+    main:
+      - step:
+          name: Run Full Tests (Chrome & Edge)
+          script:
+            - npm ci                              # Install dependencies
+            - npx cypress install                 # Install Cypress
+            - chmod +x ./node_modules/.bin/cypress  # Ensure Cypress binary is executable
+            - echo "Running full test suite on main branch..."
+            - npm run start &
+            - npx cypress run \
+                --browser chrome \
+                --reporter-options reportDir=cypress/reports,reportFilename=index.html
+            - npm run start &
+            - npx cypress run \
+                --browser edge \
+                --reporter-options reportDir=cypress/reports,reportFilename=index.html
+          artifacts:
+            - cypress/reports/**                  # Save test reports as artifacts

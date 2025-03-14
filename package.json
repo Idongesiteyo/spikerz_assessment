@@ -1,0 +1,40 @@
+{
+  "name": "cypress_assessment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cy:runHeaded": "cypress run --headed",
+    "cy:run": "cypress run",
+    "cypress:run": "cypress run --reporter-options reportDir=cypress/reports,reportFilename=index.html",
+    "cy:run:test": "cypress run --spec 'cypress/e2e/test_cases/socialConnect.cy.js'",
+    "test": "npm run mochawesome:clear && npm run cy:run && npm run report:open",
+    "mochawesome:clear": "if exist cypress\\reports (rd /s /q cypress\\reports)",
+    "report:open": "start cypress/reports/index.html",
+    "cy:smoke": "cypress run --env grep=@smoke --reporter-options reportDir=cypress/reports,reportFilename=index.html",
+    "cy:smoke2": "cypress run --env grep=@smoke",
+    "test:ci": "cypress run --env grep=@smoke --spec 'cypress/e2e/test_cases/hooks.cy.js'",
+    "test:single": "npm run mochawesome:clear && npm run cypress:run:test && npm run report:open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cypress/grep": "^4.1.0",
+    "@shelex/cypress-allure-plugin": "^2.40.2",
+    "@testing-library/cypress": "^10.0.2",
+    "allure-commandline": "^2.32.0",
+    "cypress": "^13.16.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "cypress-xpath": "^2.0.1",
+    "xlsx": "^0.18.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "papaparse": "^5.4.1",
+    "wd": "^1.14.0"
+  }
+}
