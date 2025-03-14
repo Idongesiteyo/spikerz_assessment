@@ -20,7 +20,7 @@ Project Structure
 Installation
 
 1. Clone the repository:
-git clone <https://github.com/Idongesiteyo/spikerz_assessment.git>
+git clone https://github.com/Idongesiteyo/spikerz_assessment.git
 
 2. Install the dependencies:
 
@@ -35,6 +35,8 @@ npm install
   "googlePassword": "your_google_password"
 }
 
+Use .env file to store sensitive test data
+
 4. Configure the cypress.config.js file:
 
 module.exports = defineConfig({
@@ -42,24 +44,41 @@ module.exports = defineConfig({
     baseUrl: 'https://demo.spikerz.com',
     defaultCommandTimeout: 120000,
     chromeWebSecurity: false
+    reporter: 'cypress-mochawesome-reporter
   }
 });
 
 Test Workflow
 
-Login to Application:
+- Login to Application:
 The LoginPage class handles logging in with basic auth credentials.
-Navigate to Social Connect:
+- Navigate to Social Connect:
 The SocialConnectPage class navigates to the Social Connect section.
-Google SSO Login:
+- Google SSO Login:
 The test triggers a Google login using a custom Cypress command (loginWithGoogle).
-Verify Connection Success:
+-  Connection Success:
 The test checks that the connected account (@dina_bakery_shop) is displayed.
-Running the Tests
+
+- Running the Tests
 To run the tests, use the Cypress Test Runner:
 npx cypress open
-Or run headlessly:
-npx cypress run
-Troubleshooting
+
+- Or run headlessly:
+npm run test:single
+
+- Run the test on the CI
+npm run test:ci
+
+- Cross Browser compatibility
+The test is designed to run on Chrome and Edge browsers.
+This was achieved by defining these browsers on the GitHub actions workflow.
+
+- Troubleshooting
 Cross-Origin Issues: Use cy.origin() when interacting with Google login.
-Let me know if you’d like me to refine this or add more sections! 🚀
+
+- Error Handling is handled by
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log('Uncaught Exception:', err.message);
+    return false;
+}); 
+

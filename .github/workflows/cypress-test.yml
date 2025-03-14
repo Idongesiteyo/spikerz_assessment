@@ -10,7 +10,14 @@ on:
 
 jobs:
   cypress-run:
+    name: Run Cypress Tests              # Display name for the job
     runs-on: ubuntu-latest
+
+  # Define a matrix strategy to run tests on multiple browsers
+    strategy:
+      matrix:
+       browser: [chrome, edge]         # Run tests on Chrome and Edge
+    
 
     steps:
       # Checkout the repository
@@ -25,11 +32,15 @@ jobs:
 
       # Install dependencies
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       # Run Cypress tests
       - name: Run Cypress Tests
         run: npx cypress run
+
+      # Set executable permissions for Cypress binary
+      - name: Grant Permissions
+        run: chmod +x ./node_modules/.bin/cypress
 
       # Upload Cypress artifacts (videos and screenshots) in case of failure
       - name: Upload Cypress Artifacts
@@ -46,3 +57,12 @@ jobs:
         with:
           name: cypress-results
           path: cypress/results
+
+      # Step 7: Save test results as artifacts
+      - name: Archive Mochawesome Report
+        if: always()                    # Run this step regardless of test results
+        uses: actions/upload-artifact@v3
+        with:
+              # Create unique artifact name using browser and commit SHA
+            name: mochawesome-report-${{ matrix.browser }}-${{ github.sha }}
+            path: cypress/reports/        # Location of test reports
