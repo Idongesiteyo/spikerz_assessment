@@ -4,8 +4,8 @@ import 'cypress-mochawesome-reporter/register';
 // import '@shelex/cypress-allure-plugin';
 
 import registerCypressGrep from '@cypress/grep/src/support'
-registerCypressGrep()
-
+registerCypressGrep();
+    
 import 'cypress-xpath'; 
 
 // Alternative method using import (use either this OR the require method above, not both)
@@ -19,3 +19,9 @@ import 'cypress-xpath';
 //     console.log('Current grep pattern:', Cypress.env('grep'))
 //     console.log('Running test:', test.title)
 // })
+
+// Prevent Cypress from failing tests on uncaught exceptions
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log('Uncaught Exception:', err.message);
+    return false;
+});

@@ -15,6 +15,13 @@ describe.only('Social Connect Automation Task', () => {
             socialConnectPage.clickYouTube();
             
             socialConnectPage.clickGoogleLogin();
+
+            cy.window().then((win) => {
+                cy.stub(win, 'open').callsFake((url) => {
+                  win.location.href = url; 
+                });
+              });
+              
             cy.loginWithGoogle(testData.googleEmail, testData.googlePassword);
             cy.contains('Continue').click();
             cy.contains('Continue').click();

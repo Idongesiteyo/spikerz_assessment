@@ -1,4 +1,4 @@
-name: Run Cypress Tests
+name: Cypress Tests
 
 on:
   push:
@@ -13,39 +13,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      # Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 16
 
-      - name: Install dependencies
+      # Install dependencies
+      - name: Install Dependencies
         run: npm install
-        
-      - name: Run Cypress tests
-        run: npx cypress run --browser chrome --headless
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-test-results
-          path: cypress/reports
+      # Run Cypress tests
+      - name: Run Cypress Tests
+        run: npx cypress run
 
-      - name: Upload screenshots (on failure)
+      # Upload Cypress artifacts (videos and screenshots) in case of failure
+      - name: Upload Cypress Artifacts
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots
+          name: cypress-artifacts
+          path: cypress/videos, cypress/screenshots
 
-      - name: Upload videos
+      # Publish test results
+      - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: cypress-videos
-          path: cypress/videos
-
-# This setup installs dependencies, runs Cypress, and uploads artifacts like reports, screenshots, and videos.
+          name: cypress-results
+          path: cypress/results

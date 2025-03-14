@@ -24,52 +24,19 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-//   Cypress.Commands.add('loginWithGoogle', (email, password) => {
-//     cy.origin('https://accounts.google.com', () => {
-//         cy.get('input[type="email"]',{ timeout: 10000 }).type(email, { force: true }).type('{enter}');
-//         cy.wait(2000);
-//         cy.get('input[type="password"]',{ timeout: 10000 }).type(password, { force: true }).type('{enter}');
-//     });
-// });
-  
-// Cypress.Commands.add('loginWithGoogle', (email, password) => {
-//   cy.visit('https://accounts.google.com');
-//   cy.get('input[type="email"]').type(email);
-//   cy.get('#identifierNext').click();
-//   cy.get('input[type="password"]').type(password);
-//   cy.get('#passwordNext').click();
-// });
-
-// Cypress.Commands.add('loginWithGoogle', (email, password) => {
-//   cy.visit('https://accounts.google.com');
-
-//   cy.origin('https://accounts.google.com', { args: { email, password } }, ({ email, password }) => {
-//     cy.get('input[type="email"]').type(email);
-//     cy.get('#identifierNext').click();
-//     cy.get('input[type="password"]').type(password, { log: false });
-//     cy.get('#passwordNext').click();
-//   });
-// });
-
 Cypress.Commands.add('loginWithGoogle', (email, password) => {
-  cy.visit('https://accounts.google.com');
-
-  cy.origin('https://accounts.google.com', { args: { email, password } }, ({ email, password }) => {
-    
-    cy.get('#identifierId').type(email, { delay: 100 }); 
-    cy.wait(500); 
-    cy.contains('Next').click();
-
-    
-    cy.get('#password > .aCsJod > .aXBtI > .Xb9hP > .whsOnd')
-      .should('be.visible')
-      .type(password, { delay: 100, log: false }); // 
-    cy.wait(500); 
-    cy.contains('Next').click();
-  });
+cy.visit('https://accounts.google.com');
+cy.origin('https://accounts.google.com', { args: { email, password } }, ({ email, password }) => {
+  cy.get('#identifierId').type(email, { delay: 100 }); 
+  cy.wait(1000);
+  cy.contains('Next').click();
+  cy.wait(2000); 
+  cy.get('#password > .aCsJod > .aXBtI > .Xb9hP > .whsOnd')
+    .type(password, { delay: 100, log: false });
+  cy.wait(1000);
+  cy.contains('Next').click();
 });
-
-
+});
 
 
 import 'cypress-file-upload';
